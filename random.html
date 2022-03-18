@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe of the Day!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="single.css">
+    <link rel="shortcut icon" href="favicon-32x32.png" type="image/x-icon">
+
+</head>
+
+<body>
+    <nav>
+        <h1>Recipe of the Day!</h1>
+        <a href="index.html">Home</a>
+    </nav>
+    <section>
+
+    </section>
+    <script>
+        let sec = document.querySelector("section")
+        fetch("https://www.themealdb.com/api/json/v1/1/random.php")
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res.meals)
+                // getDivs(res.meals[0])
+                let { strMeal, strMealThumb, strSource, strCategory, strArea, strInstructions, strYoutube } = res.meals[0]
+                // console.log(strYoutube, strYoutube.slice(32))
+                let src = `https://www.youtube.com/embed/${strYoutube.slice(32)}`
+                sec.innerHTML = `
+            <article>
+            <img src=${strMealThumb} alt="">
+            <div>
+                <h2 id="name">${strMeal}</h2>
+                <h3>${strCategory}</h3>
+                <h3>${strArea}</h3>
+                ${getDivs(res.meals[0])}
+            </div>
+        </article>
+        <h2>How to Cook this? 😋</h2>
+        <p>${strInstructions}</p>
+        <h4>Watch Video</h4>
+        <iframe width="560" height="315" src=${src} title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        <br><a href=${strSource}>Read Full Recipe Here!</a>
+                `
+            })
+        function getDivs(arr) {
+            let res = ""
+            console.log(arr)
+            for (let i = 1; i <= 20; i++) {
+                if (arr[`strIngredient${i}`]) {
+                    res += `<div>
+                    <p>${arr[`strIngredient${i}`]}</p>
+                    <p>${arr[`strMeasure${i}`]}</p>
+                </div>`
+                } else break
+
+                // console.log(arr[`strIngredient${i}`], arr[`strMeasure${i}`])
+            }
+            return res
+        }
+    </script>
+
+</body>
+
+</html>
