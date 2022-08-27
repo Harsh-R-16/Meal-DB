@@ -67,6 +67,7 @@ select {
   overflow: hidden;
   padding-bottom: 20px;
   position: relative;
+  cursor: pointer
 }
 img {
   width: 100%;
